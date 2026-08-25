@@ -58,6 +58,20 @@ LEFT JOIN LATERAL (
     WHERE ST_Intersects(ST_PointOnSurface(p.geom), z.geom)
     LIMIT 1
 ) z ON TRUE;
+
+-- 4. Agent & Safety Loop Audit Table
+CREATE TABLE IF NOT EXISTS agent_loop_audits (
+    audit_id VARCHAR(64) PRIMARY KEY,
+    phase_order INTEGER,
+    agent_name VARCHAR(64) NOT NULL,
+    skills_used VARCHAR(256),
+    loop_name VARCHAR(64),
+    status VARCHAR(32),
+    duration_ms DOUBLE PRECISION,
+    records_count INTEGER,
+    details TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
 """
 
 DUCKDB_DDL = """
@@ -96,11 +110,24 @@ CREATE TABLE IF NOT EXISTS fct_parcels_enriched (
     match_status VARCHAR,
     geom_wkt VARCHAR
 );
+
+CREATE TABLE IF NOT EXISTS agent_loop_audits (
+    audit_id VARCHAR PRIMARY KEY,
+    phase_order INTEGER,
+    agent_name VARCHAR,
+    skills_used VARCHAR,
+    loop_name VARCHAR,
+    status VARCHAR,
+    duration_ms DOUBLE,
+    records_count INTEGER,
+    details VARCHAR,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 """
 
 
 def initialize_schemas(backend: str = "duckdb"):
-    """Initializes schemas and spatial indexes in the chosen database backend."""
+    """Initializes schemas, spatial indexes, and agent audit tables in the chosen backend."""
     if backend == "postgis":
         engine = db_manager.get_postgres_engine()
         with engine.begin() as conn:
@@ -109,4 +136,4 @@ def initialize_schemas(backend: str = "duckdb"):
     else:
         conn = db_manager.get_duckdb_connection()
         conn.execute(DUCKDB_DDL)
-        logger.info("DuckDB Spatial tables initialized.")
+        logger.info("DuckDB Spatial and Agent audit tables initialized.")
