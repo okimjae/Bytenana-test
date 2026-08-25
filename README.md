@@ -6,26 +6,22 @@
 
 A production-grade, spec-driven geospatial ETL pipeline and analytical data product that ingests, normalizes, spatial-joins, and analyzes zoning districts from the **City of Buda** and parcels from **Hays County**, Texas.
 
-Governed by a **4-Agent Collaborative Mesh** with specialized skills and closed safety feedback loops.
+Governed by a **4-Agent Collaborative Mesh** with specialized skills, Sentry APM observability, and closed safety feedback loops.
 
 ---
 
-## ⚡ Quickstart (1-Command Execution)
+## ⚡ Quickstart (Simple CLI Shortcuts)
 
-### 1. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+Use the built-in **Makefile** shortcuts for 1-word execution:
 
-### 2. Run Complete Pipeline (with Automated Evals)
-```bash
-python run_pipeline.py
-```
-
-### 3. Run Automated Test Suite
-```bash
-pytest tests/ -v
-```
+| Command | Action |
+| :--- | :--- |
+| **`make run`** | Runs the full pipeline (Ingestion $\rightarrow$ Spatial Engine $\rightarrow$ DB Sink $\rightarrow$ Evals). |
+| **`make map`** | Generates and automatically opens the **interactive web map** in your browser. |
+| **`make test`** | Runs the full automated test suite (**17 assertions passing**). |
+| **`make evals`** | Runs the **Automated Evaluation Harness** (geodesic accuracy & regex checks). |
+| **`make db`** | Displays table counts, persisted rows, and **Agent Safety Loop audits** in the database. |
+| **`make clean`** | Cleans up temporary caches and preview files. |
 
 ---
 
