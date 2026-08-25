@@ -74,16 +74,16 @@ class DatabaseSink:
                 FROM enriched_df_view;
             """)
 
-            # 4. Persist Agent & Safety Loop Audits
+            # 4. Persist Agent & Safety Loop Audits with Refined Naming
             timings = agent_timings or {}
             now = datetime.now(timezone.utc).isoformat()
             audits_data = [
                 {
                     "audit_id": f"AUDIT-P1-{uuid.uuid4().hex[:8]}",
                     "phase_order": 1,
-                    "agent_name": "Ingestion Agent",
-                    "skills_used": "arcgis_rest_crawler, idempotent_db_sink, input_sanitizer, sentry_apm_tracing",
-                    "loop_name": "Loop 1: Ingestion & Schema Gate",
+                    "agent_name": "Data Ingestion & Contract Agent",
+                    "skills_used": "arcgis_rest_extractor, idempotent_staging_sink, geo_security_sanitizer, sentry_apm_profiler",
+                    "loop_name": "Gate 1: Ingestion & Contract Gate",
                     "status": "PASSED",
                     "duration_ms": float(timings.get("phase1_ingest_ms", 415.0)),
                     "records_count": int(len(zoning_gdf) + len(parcels_gdf)),
@@ -93,9 +93,9 @@ class DatabaseSink:
                 {
                     "audit_id": f"AUDIT-P2-{uuid.uuid4().hex[:8]}",
                     "phase_order": 2,
-                    "agent_name": "Spatial GIS Agent",
-                    "skills_used": "spatial_projection_2277, postgis_area_calculator, point_on_surface_matcher, sentry_error_context_tagger",
-                    "loop_name": "Loop 2: Geodesic & Topology Gate",
+                    "agent_name": "Geodesic & Spatial Engine Agent",
+                    "skills_used": "texas_state_plane_projector, geodesic_lot_calculator, interior_point_matcher, sentry_spatial_error_tagger",
+                    "loop_name": "Gate 2: Geodesic & Topology Gate",
                     "status": "PASSED",
                     "duration_ms": float(timings.get("phase2_spatial_ms", 12.5)),
                     "records_count": int(len(enriched_gdf)),
@@ -105,9 +105,9 @@ class DatabaseSink:
                 {
                     "audit_id": f"AUDIT-P3-{uuid.uuid4().hex[:8]}",
                     "phase_order": 3,
-                    "agent_name": "Analytics QA Agent",
-                    "skills_used": "zoning_regex_classifier, median_lot_aggregator, radius_proximity_query, sentry_security_anomaly_alerter",
-                    "loop_name": "Loop 3: Analytics & Evals Gate",
+                    "agent_name": "Analytics & Quality Assurance Agent",
+                    "skills_used": "zoning_regex_classifier, subdivision_median_aggregator, proximity_radius_analyst, sentry_anomaly_detector",
+                    "loop_name": "Gate 3: Business Logic & Evals Gate",
                     "status": "PASSED",
                     "duration_ms": float(timings.get("phase3_analytics_ms", 6.2)),
                     "records_count": int((enriched_gdf["is_residential"] == True).sum()),
@@ -117,9 +117,9 @@ class DatabaseSink:
                 {
                     "audit_id": f"AUDIT-P4-{uuid.uuid4().hex[:8]}",
                     "phase_order": 4,
-                    "agent_name": "Doc & Defense Agent",
-                    "skills_used": "spec_synthesizer, assumptions_mapper, interview_prep_writer",
-                    "loop_name": "Loop 4: Assessment Delivery Gate",
+                    "agent_name": "System Documentation & Delivery Agent",
+                    "skills_used": "architecture_spec_synthesizer, tradeoff_assumptions_mapper, compliance_verifier",
+                    "loop_name": "Gate 4: Deliverables & Rubric Gate",
                     "status": "PASSED",
                     "duration_ms": 1.0,
                     "records_count": 4,

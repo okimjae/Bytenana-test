@@ -36,10 +36,10 @@ The system is decomposed into four decoupled, single-responsibility modules:
 ```mermaid
 flowchart TD
     subgraph MultiAgentMesh [Multi-Agent Collaborative Mesh & Skills]
-        A_Ingest["📥 Ingestion Agent\n(Skills: arcgis_rest_crawler, idempotent_db_sink, input_sanitizer)"]
-        A_Spatial["📐 Spatial GIS Agent\n(Skills: spatial_projection_2277, postgis_area_calculator, point_on_surface_matcher)"]
-        A_Analytics["📊 Analytics QA Agent\n(Skills: zoning_regex_classifier, median_lot_aggregator, radius_proximity_query)"]
-        A_Docs["📝 Doc & Defense Agent\n(Skills: spec_synthesizer, assumptions_mapper)"]
+        A_Ingest["📥 Data Ingestion & Contract Agent\n(Skills: arcgis_rest_extractor, idempotent_staging_sink, geo_security_sanitizer, sentry_apm_profiler)"]
+        A_Spatial["📐 Geodesic & Spatial Engine Agent\n(Skills: texas_state_plane_projector, geodesic_lot_calculator, interior_point_matcher, sentry_spatial_error_tagger)"]
+        A_Analytics["📊 Analytics & Quality Assurance Agent\n(Skills: zoning_regex_classifier, subdivision_median_aggregator, proximity_radius_analyst, sentry_anomaly_detector)"]
+        A_Docs["📝 System Documentation & Delivery Agent\n(Skills: architecture_spec_synthesizer, tradeoff_assumptions_mapper, compliance_verifier)"]
     end
 
     subgraph Storage [Database Layer]
@@ -48,7 +48,7 @@ flowchart TD
         FctParcels[("fct_parcels_enriched\n(Area in Acres, Match Status)")]
     end
 
-    subgraph AnalyticsDelivery [Analytical Delivery & Safety Gates]
+    subgraph AnalyticsDelivery [Analytical Delivery & Quality Gates]
         Query1["Core Query 1: Residential > 1 Acre"]
         Query2["Core Query 2: Subdivision Medians"]
         Query3["Stretch: 1km Proximity Radius"]
@@ -70,7 +70,7 @@ flowchart TD
 | **Local Planar Projection (EPSG:2277)** | Eliminates planar distortion in Texas South Central, ensuring exact physical area computation in survey feet. |
 | **Dynamic Geometry Calculation (Ignore Source Area)** | Raw source area fields are notoriously uncurated, outdated, or in inconsistent units. |
 | **`ST_PointOnSurface` over `ST_Centroid`** | Guarantees that representative points for concave or L-shaped lots fall strictly inside the parcel boundary. |
-| **Multi-Agent Orchestration with Safety Loops** | Isolates responsibilities across 4 specialized agents bounded by quality gates and self-correction. |
+| **Multi-Agent Orchestration with Quality Gates** | Isolates responsibilities across 4 specialized agents bounded by quality gates and self-correction. |
 | **Dual Backend (DuckDB Spatial + PostGIS)** | Enables zero-dependency local CLI execution out-of-the-box while maintaining 100% production SQL/PostGIS parity. |
 | **Strict SQL Parameterization & Vertex Caps** | Prevents SQL injection and protects spatial indexes against Denial-of-Service (*Geom Bombs*). |
 | **Structured JSON Logging & Sentry APM** | Provides distributed tracing, execution duration profiling, and rich error context per polygon in production. |
